@@ -79,8 +79,52 @@ class Game:
 				blink = not blink
 				last_blink_time = time.time()
     
+	def show_commands_screen(self):
+		background_image_commands = pygame.image.load('graphics/start/instructions.png').convert()
+		background_image_commands = pygame.transform.scale(background_image_commands, (WIDTH, HEIGTH))
+		self.screen.fill((0, 0, 0))
+  
+		INSTRUCTION_COLOR = (255, 255, 255) # Branco
+		shadow_color = (0, 0, 0)
+		shadow_offset = 2
+
+		instruction_font = pygame.font.Font(None, 40)
+		instruction_text = instruction_font.render("Press ENTER to start", True, INSTRUCTION_COLOR)
+  
+		instruction_rect = instruction_text.get_rect(center=(WIDTH // 2, HEIGTH - 40))
+
+		blink = True
+		waiting = True
+		last_blink_time = time.time()
+
+		while waiting:
+			self.screen.blit(background_image_commands, (0, 0))
+   
+			if blink:
+				instruction_shadow = instruction_font.render("Press ENTER to start", True, shadow_color)
+				self.screen.blit(instruction_shadow, (instruction_rect.x + shadow_offset, instruction_rect.y + shadow_offset))
+				self.screen.blit(instruction_text, instruction_rect)
+   
+			pygame.display.flip()
+
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					pygame.quit()
+					sys.exit()
+				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_RETURN:
+						commands_start_sound = pygame.mixer.Sound('audio/start/instructions-start.wav')
+						commands_start_sound.set_volume(0.5)
+						commands_start_sound.play()
+						waiting = False
+
+			if time.time() - last_blink_time > 0.5:
+				blink = not blink
+				last_blink_time = time.time()
+    
 	def run(self):
 		game.show_start_screen()
+		game.show_commands_screen()
 		while True:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
