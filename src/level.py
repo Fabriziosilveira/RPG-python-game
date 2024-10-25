@@ -172,6 +172,9 @@ class YSortCameraGroup(pygame.sprite.Group):
 
 	def custom_draw(self,player):
 
+		self.half_width = self.display_surface.get_size()[0] // 2
+		self.half_height = self.display_surface.get_size()[1] // 2
+		
 		# getting the offset 
 		self.offset.x = player.rect.centerx - self.half_width
 		self.offset.y = player.rect.centery - self.half_height
