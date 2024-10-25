@@ -8,7 +8,7 @@ class Game:
 
 		# general setup
 		pygame.init()
-		self.screen = pygame.display.set_mode((WIDTH,HEIGTH))
+		self.screen = pygame.display.set_mode((WIDTH,HEIGTH), pygame.RESIZABLE)
 		pygame.display.set_caption('Legend Adventure')
 		self.clock = pygame.time.Clock()
 
@@ -24,15 +24,14 @@ class Game:
 		background_image = pygame.transform.scale(background_image, (WIDTH, HEIGTH))
 		self.screen.fill((0, 0, 0))
 
-		BACKGROUND_COLOR = (30, 30, 30)
-		TITLE_COLOR = (173, 216, 230)  # Azul claro
+		TITLE_COLOR = (255, 255, 255)  # Branco
 		INSTRUCTION_COLOR = (50, 50, 50) # Cinza escuro
 			
 		# Definir fontes e textos
-		title_font = pygame.font.Font(None, 100)
-		instruction_font = pygame.font.Font(None, 40)
+		title_font = pygame.font.Font(UI_FONT, 75)
+		instruction_font = pygame.font.Font(UI_FONT, 35)
 
-		title_text = title_font.render("RPG Game", True, TITLE_COLOR)
+		title_text = title_font.render("Legend Adventure", True, TITLE_COLOR)
 		instruction_text = instruction_font.render("Press ENTER to start", True, INSTRUCTION_COLOR)
 
 		# Calcular a posição centralizada
@@ -45,12 +44,17 @@ class Game:
 		last_blink_time = time.time()
 
 		while waiting:
-			self.screen.blit(background_image, (0, 0))
+			current_width, current_height = self.screen.get_size()
+			background_image_resized = pygame.transform.scale(background_image, (current_width, current_height))
+			self.screen.blit(background_image_resized, (0, 0))
+   
+			title_rect = title_text.get_rect(center=(current_width // 2, current_height // 2 - 100))
+			instruction_rect = instruction_text.get_rect(center=(current_width // 2, current_height // 2 + 150))
 
 			# Exibir título com sombra
 			shadow_offset = 2
 			shadow_color = (0, 0, 0)  # Cor da sombra
-			title_shadow = title_font.render("RPG Game", True, shadow_color)
+			title_shadow = title_font.render("Legend Adventure", True, shadow_color)
 			self.screen.blit(title_shadow, (title_rect.x + shadow_offset, title_rect.y + shadow_offset))
 			self.screen.blit(title_text, title_rect)
 				
@@ -85,10 +89,10 @@ class Game:
 		self.screen.fill((0, 0, 0))
   
 		INSTRUCTION_COLOR = (255, 255, 255) # Branco
-		shadow_color = (0, 0, 0)
+		shadow_color = (0, 0, 0) # Preto
 		shadow_offset = 2
 
-		instruction_font = pygame.font.Font(None, 40)
+		instruction_font = pygame.font.Font(UI_FONT, 20)
 		instruction_text = instruction_font.render("Press ENTER to start", True, INSTRUCTION_COLOR)
   
 		instruction_rect = instruction_text.get_rect(center=(WIDTH // 2, HEIGTH - 40))
@@ -98,7 +102,11 @@ class Game:
 		last_blink_time = time.time()
 
 		while waiting:
-			self.screen.blit(background_image_commands, (0, 0))
+			current_width, current_height = self.screen.get_size()
+			background_image_commands_resized = pygame.transform.scale(background_image_commands, (current_width, current_height))
+			self.screen.blit(background_image_commands_resized, (0, 0))
+   
+			instruction_rect = instruction_text.get_rect(center=(current_width // 2, current_height - 40))
    
 			if blink:
 				instruction_shadow = instruction_font.render("Press ENTER to start", True, shadow_color)
@@ -130,6 +138,9 @@ class Game:
 				if event.type == pygame.QUIT:
 					pygame.quit()
 					sys.exit()
+				elif event.type == pygame.VIDEORESIZE:
+					WIDTH, HEIGTH = event.w, event.h
+					self.screen = pygame.display.set_mode((WIDTH, HEIGTH), pygame.RESIZABLE)
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_m:
 						self.level.toggle_menu()
