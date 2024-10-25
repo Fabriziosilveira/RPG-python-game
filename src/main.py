@@ -9,22 +9,24 @@ class Game:
 		# general setup
 		pygame.init()
 		self.screen = pygame.display.set_mode((WIDTH,HEIGTH))
-		pygame.display.set_caption('RPG Game')
+		pygame.display.set_caption('Legend Adventure')
 		self.clock = pygame.time.Clock()
 
 		self.level = Level()
 
 		# sound 
 		main_sound = pygame.mixer.Sound('audio/main.ogg')
-		main_sound.set_volume(0.5)
+		main_sound.set_volume(0.2)
 		main_sound.play(loops = -1)
 
 	def show_start_screen(self):
+		background_image = pygame.image.load('graphics/start/background.jpeg').convert()
+		background_image = pygame.transform.scale(background_image, (WIDTH, HEIGTH))
 		self.screen.fill((0, 0, 0))
 
 		BACKGROUND_COLOR = (30, 30, 30)
 		TITLE_COLOR = (173, 216, 230)  # Azul claro
-		INSTRUCTION_COLOR = (144, 238, 144)  # Verde claro
+		INSTRUCTION_COLOR = (50, 50, 50) # Cinza escuro
 			
 		# Definir fontes e textos
 		title_font = pygame.font.Font(None, 100)
@@ -37,13 +39,13 @@ class Game:
 		title_rect = title_text.get_rect(center=(WIDTH // 2, HEIGTH // 2 - 100))
 		instruction_rect = instruction_text.get_rect(center=(WIDTH // 2, HEIGTH // 2 + 150))
 
-			# Controle de animação de piscar
+		# Controle de animação de piscar
 		blink = True
 		waiting = True
 		last_blink_time = time.time()
 
 		while waiting:
-			self.screen.fill(BACKGROUND_COLOR)
+			self.screen.blit(background_image, (0, 0))
 
 			# Exibir título com sombra
 			shadow_offset = 2
@@ -60,13 +62,16 @@ class Game:
 
 			pygame.display.flip()
 
-				# Gerenciamento de eventos
+			# Gerenciamento de eventos
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					pygame.quit()
 					sys.exit()
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_RETURN:
+						start_game_sound = pygame.mixer.Sound('audio/start/game-start.wav')
+						start_game_sound.set_volume(0.5)
+						start_game_sound.play()
 						waiting = False
 
 			# Alterna o estado de piscar a cada 0.5 segundos
