@@ -92,6 +92,7 @@ class Player(Entity):
 				self.attacking = True
 				self.attack_time = pygame.time.get_ticks()
 				self.create_attack()
+				self.weapon_attack_sound.set_volume(0.3)
 				self.weapon_attack_sound.play()
 
 			# Magic
