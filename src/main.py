@@ -20,6 +20,8 @@ class Game:
 		main_sound.play(loops = -1)
 
 	def show_start_screen(self):
+		background_image = pygame.image.load('graphics/start/background.jpeg').convert()
+		background_image = pygame.transform.scale(background_image, (WIDTH, HEIGTH))
 		self.screen.fill((0, 0, 0))
 
 		BACKGROUND_COLOR = (30, 30, 30)
@@ -37,13 +39,13 @@ class Game:
 		title_rect = title_text.get_rect(center=(WIDTH // 2, HEIGTH // 2 - 100))
 		instruction_rect = instruction_text.get_rect(center=(WIDTH // 2, HEIGTH // 2 + 150))
 
-			# Controle de animação de piscar
+		# Controle de animação de piscar
 		blink = True
 		waiting = True
 		last_blink_time = time.time()
 
 		while waiting:
-			self.screen.fill(BACKGROUND_COLOR)
+			self.screen.blit(background_image, (0, 0))
 
 			# Exibir título com sombra
 			shadow_offset = 2
@@ -60,7 +62,7 @@ class Game:
 
 			pygame.display.flip()
 
-				# Gerenciamento de eventos
+			# Gerenciamento de eventos
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					pygame.quit()
