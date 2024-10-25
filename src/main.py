@@ -9,14 +9,14 @@ class Game:
 		# general setup
 		pygame.init()
 		self.screen = pygame.display.set_mode((WIDTH,HEIGTH))
-		pygame.display.set_caption('RPG Game')
+		pygame.display.set_caption('Legend Adventure')
 		self.clock = pygame.time.Clock()
 
 		self.level = Level()
 
 		# sound 
 		main_sound = pygame.mixer.Sound('audio/main.ogg')
-		main_sound.set_volume(0.5)
+		main_sound.set_volume(0.2)
 		main_sound.play(loops = -1)
 
 	def show_start_screen(self):
@@ -26,7 +26,7 @@ class Game:
 
 		BACKGROUND_COLOR = (30, 30, 30)
 		TITLE_COLOR = (173, 216, 230)  # Azul claro
-		INSTRUCTION_COLOR = (144, 238, 144)  # Verde claro
+		INSTRUCTION_COLOR = (50, 50, 50) # Cinza escuro
 			
 		# Definir fontes e textos
 		title_font = pygame.font.Font(None, 100)
@@ -69,6 +69,9 @@ class Game:
 					sys.exit()
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_RETURN:
+						start_game_sound = pygame.mixer.Sound('audio/start/game-start.wav')
+						start_game_sound.set_volume(0.5)
+						start_game_sound.play()
 						waiting = False
 
 			# Alterna o estado de piscar a cada 0.5 segundos
