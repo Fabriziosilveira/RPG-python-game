@@ -132,7 +132,7 @@ class Game:
     
 	def run(self):
 		game.show_start_screen()
-		game.show_commands_screen()
+		# game.show_commands_screen()
 		while True:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
